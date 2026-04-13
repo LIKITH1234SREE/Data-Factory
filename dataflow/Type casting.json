@@ -1,0 +1,88 @@
+{
+	"name": "Type casting",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DS_patients_df",
+						"type": "DatasetReference"
+					},
+					"name": "Patients"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "SQL_DF",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "YearColumn"
+				},
+				{
+					"name": "castDOB"
+				},
+				{
+					"name": "ArrangingColumns"
+				},
+				{
+					"name": "SortOnYear"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          PatientID as string,",
+				"          FirstName as string,",
+				"          LastName as string,",
+				"          MiddleName as string,",
+				"          SSN as string,",
+				"          PhoneNumber as string,",
+				"          Gender as string,",
+				"          DOB as date,",
+				"          Address as string,",
+				"          ModifiedDate as date",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> Patients",
+				"castDOB derive(year = year(DOB)) ~> YearColumn",
+				"Patients cast(output(",
+				"          DOB as timestamp 'MM/dd/yyyy HH:mm:ss'",
+				"     ),",
+				"     errors: true) ~> castDOB",
+				"YearColumn select(mapColumn(",
+				"          PatientID,",
+				"          FirstName,",
+				"          LastName,",
+				"          MiddleName,",
+				"          year,",
+				"          SSN,",
+				"          PhoneNumber,",
+				"          Gender,",
+				"          DOB,",
+				"          Address,",
+				"          ModifiedDate",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> ArrangingColumns",
+				"ArrangingColumns sort(desc(year, true)) ~> SortOnYear",
+				"SortOnYear sink(allowSchemaDrift: true,",
+				"     validateSchema: true,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> sink1"
+			]
+		}
+	}
+}

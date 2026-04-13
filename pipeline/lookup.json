@@ -1,0 +1,42 @@
+{
+	"name": "lookup",
+	"properties": {
+		"activities": [
+			{
+				"name": "lookup",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "lookup_DF",
+						"type": "DataFlowReference",
+						"datasetParameters": {
+							"sink1": {
+								"tablename": "lookup"
+							}
+						}
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
+			}
+		],
+		"folder": {
+			"name": "Data Flows"
+		},
+		"annotations": [],
+		"lastPublishTime": "2026-04-08T08:45:55Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}
