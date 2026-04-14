@@ -17,12 +17,7 @@
 				"typeProperties": {
 					"dataflow": {
 						"referenceName": "Select_DF",
-						"type": "DataFlowReference",
-						"datasetParameters": {
-							"sink1": {
-								"FileName": "select.csv"
-							}
-						}
+						"type": "DataFlowReference"
 					},
 					"compute": {
 						"coreCount": 8,

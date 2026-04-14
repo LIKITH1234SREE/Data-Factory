@@ -5,20 +5,13 @@
 			"referenceName": "ADLS_2_ADF",
 			"type": "LinkedServiceReference"
 		},
-		"parameters": {
-			"FileName": {
-				"type": "string"
-			}
-		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": {
-					"value": "@dataset().FileName",
-					"type": "Expression"
-				},
+				"fileName": "Select.csv",
+				"folderPath": "selectedFiles",
 				"fileSystem": "rawfiles"
 			},
 			"columnDelimiter": ",",
