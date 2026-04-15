@@ -10,8 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": "filter.csv",
-				"folderPath": "filter",
+				"folderPath": "dervied",
 				"fileSystem": "rawfiles"
 			},
 			"columnDelimiter": ",",
