@@ -1,0 +1,45 @@
+{
+	"name": "dataflow1",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DS_Providers",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [],
+			"transformations": [
+				{
+					"name": "aggregate1"
+				},
+				{
+					"name": "cast1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          ProviderID as string,",
+				"          FirstName as string,",
+				"          LastName as string,",
+				"          Specialization as string,",
+				"          DeptID as string,",
+				"          NPI as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> source1",
+				"cast1 aggregate(groupBy(Specialization),",
+				"     total = sum(ProviderID)) ~> aggregate1",
+				"source1 cast(output(",
+				"          ProviderID as integer",
+				"     ),",
+				"     errors: true) ~> cast1"
+			]
+		}
+	}
+}
